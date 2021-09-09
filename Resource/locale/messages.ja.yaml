@@ -1,3 +1,4 @@
-admin.setting.shop.remote_island_fee_info: 離島料金設定
+admin.setting.shop.remote_island_fee_list: 離島料金一覧
+admin.setting.shop.remote_island_fee_registed: 離島料金登録
 admin.setting.shop.remote_island_fee.fee: 配送料金
-admin.setting.shop.remote_island_fee.list: 郵便番号一覧
+admin.setting.shop.remote_island_fee.postal_code: 郵便番号

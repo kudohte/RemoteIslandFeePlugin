@@ -16,6 +16,8 @@ namespace Plugin\RemoteIslandFeePlugin\Repository;
 use Eccube\Repository\AbstractRepository;
 use Plugin\RemoteIslandFeePlugin\Entity\RemoteIslandFee;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Eccube\Doctrine\Query\Queries;
+use Eccube\Util\StringUtil;
 
 /**
  * RemoteIslandFeeRepository.
@@ -25,30 +27,61 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class RemoteIslandFeeRepository extends AbstractRepository
 {
+    const Fee_SEARCH = 'fee.getQueryBuilderBySearchData';
+
+    /**
+     * @var Queries
+     */
+    protected $queries;
+
     /**
      * RemoteIslandFeeRepository constructor.
      *
      * @param RegistryInterface $registry
+     * @param Queries $queries
      */
-    public function __construct(RegistryInterface $registry)
+    public function __construct(
+        RegistryInterface $registry,
+        Queries $queries
+    )
     {
         parent::__construct($registry, RemoteIslandFee::class);
+
+        $this->queries = $queries;        
     }
 
-    /**
-     * @param int $id
-     *
-     * @return
-     */
-    public function get($id = 1)
+    public function getQueryBuilderBySearchData($searchData)
     {
-        $RemoteIsland = $this->find($id);
+        $qb = $this->createQueryBuilder('r')
+            ->select('r');
 
-        if (null === $RemoteIsland) {
-            throw new \Exception('RemoteIsland not found. id = '.$id);
+        if (
+            isset($searchData['multi']) 
+            && StringUtil::isNotBlank($searchData['multi'])
+        ) {
+            // スペース除去
+            $clean_key_multi = preg_replace('/\s+|[　]+/u', '', $searchData['multi']);
+            $id = preg_match('/^\d{0,10}$/', $clean_key_multi) ? $clean_key_multi : null;
+
+            $qb->andWhere('r.postal_code LIKE :postal_code')
+                ->setParameter('postal_code', '%'.$clean_key_multi.'%');
         }
 
-        return $this->find($id);
+        $qb->addOrderBy('r.id', 'DESC');
+
+        return $this->queries->customize(self::Fee_SEARCH, $qb, $searchData);
     }
 
+    public function getRemoteIslandFee($postal_code)
+    {
+        $data = NULL;
+        $data = $this->createQueryBuilder('r')
+            ->andWhere('r.postal_code = :postal_code')
+            ->setParameter('postal_code', $postal_code)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        return $data;
+    }
 }

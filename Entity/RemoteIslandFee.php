@@ -44,9 +44,9 @@ if (!class_exists('\Plugin\RemoteIslandFeePlugin\Entity\RemoteIslandFee')) {
         /**
          * @var string|null
          *
-         * @ORM\Column(name="postal_codes", type="text", nullable=true)
+         * @ORM\Column(name="postal_code", type="text", nullable=true)
          */
-        private $postal_codes;
+        private $postal_code;
 
         /**
          * Get id.
@@ -83,32 +83,25 @@ if (!class_exists('\Plugin\RemoteIslandFeePlugin\Entity\RemoteIslandFee')) {
         }
 
         /**
-         * Set postal_codes.
+         * Set postal_code.
          *
          * @return this
          */
-        public function setPostalCodes($postal_codes)
+        public function setPostalCode($postal_code)
         {
-            $this->postal_codes = $postal_codes;
+            $this->postal_code = $postal_code;
 
             return $this;
         }
 
         /**
-         * Get postal_codes.
+         * Get postal_code.
          *
          * @return string|null
          */
-        public function getPostalCodes()
+        public function getPostalCode()
         {
-            return $this->postal_codes;
-        }
-
-        public function getPostalCodeLists()
-        {
-            $postalCodeList = $this->getPostalCodes();
-            $array = explode(',', $postalCodeList);
-            return $array;
+            return $this->postal_code;
         }
 
     }
