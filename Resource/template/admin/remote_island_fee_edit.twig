@@ -1,0 +1,64 @@
+{% extends '@admin/default_frame.twig' %}
+
+{% set menus = ['setting', 'shop', 'shop_remote_island_fee_edit'] %}
+
+{% block title %}{{ 'admin.setting.shop.remote_island_fee_registed'|trans}}{% endblock %}
+{% block sub_title %}{{ 'admin.setting.shop'|trans }}{% endblock %}
+
+{% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
+
+{% block javascript %}
+{% endblock %}
+
+{% block main %}
+<form name="form1" role="form" class="form-horizontal" id="point_form" method="post"
+    action="{{ url('admin_setting_shop_remote_island_fee_edit') }}">
+
+    {{ form_widget(form._token) }}
+
+    <div class="c-contentsArea__cols">
+        <div class="c-contentsArea__primaryCol">
+            <div class="c-primaryCol">
+                <div class="card rounded border-0 mb-4">
+                    <div class="card-header"><span>{{ 'admin.setting.shop.remote_island_fee_registed'|trans }}</span></div>
+                    <div id="ex-shop-basic" class="card-body">
+                        <div class="row">
+                            <div class="col-2"><span>{{ 'admin.setting.shop.remote_island_fee.fee'|trans }}</span></div>
+                            <div class="col mb-2">
+                                {{ form_widget(form.fee) }}
+                                {{ form_errors(form.fee) }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2"><span>{{ 'admin.setting.shop.remote_island_fee.postal_code'|trans }}</span>
+                            </div>
+                            <div class="col mb-2">
+                                {{ form_widget(form.postal_code,{ 'attr' : { 'rows' : 120 }}) }}
+                                {{ form_errors(form.postal_code) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="c-conversionArea">
+        <div class="c-conversionArea__container">
+            <div class="row justify-content-between align-items-center">
+                <div class="col-6">
+                    <div class="c-conversionArea__leftBlockItem">
+                    </div>
+                </div>
+                <div id="ex-conversion-action" class="col-6">
+                    <div class="row align-items-center justify-content-end">
+                        <div class="col-auto">
+                            <button class="btn btn-ec-conversion px-5"
+                                type="submit">{{ 'admin.common.registration'|trans }}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}
